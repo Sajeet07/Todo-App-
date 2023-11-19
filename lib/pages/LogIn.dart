@@ -1,5 +1,7 @@
+import 'package:firebasedemo/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
@@ -9,6 +11,10 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+  firebase_auth.FirebaseAuth firebaseAuth = firebase_auth.FirebaseAuth.instance;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _pwdController = TextEditingController();
+  bool circular = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +51,11 @@ class _LogInPageState extends State<LogInPage> {
               SizedBox(
                 height: 15,
               ),
-              textItem("Email..."),
+              textItem("Email...", _emailController, false),
               SizedBox(
                 height: 15,
               ),
-              textItem("password..."),
+              textItem("password...", _pwdController, true),
               SizedBox(
                 height: 30,
               ),
@@ -91,21 +97,48 @@ class _LogInPageState extends State<LogInPage> {
   }
 
   Widget colorButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width - 90,
-      height: 60,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(colors: [
-          Color.fromARGB(255, 50, 230, 65),
-          Color.fromARGB(255, 50, 230, 65),
-          Color.fromARGB(255, 50, 230, 65)
-        ]),
-      ),
-      child: Center(
-        child: Text(
-          "Sign In",
-          style: TextStyle(color: Colors.white, fontSize: 24),
+    return InkWell(
+      onTap: () async {
+        try {
+          firebase_auth.UserCredential userCredential =
+              await firebaseAuth.signInWithEmailAndPassword(
+                  email: _emailController.text, password: _pwdController.text);
+          print(userCredential.user
+              ?.email); //we got everything inside the email because of user credential var.
+          setState(() {
+            circular:
+            false;
+          });
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (builder) => const HomePage()));
+        } catch (e) {
+          final snackBar = SnackBar(content: Text(e.toString()));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          setState(() {
+            circular:
+            false;
+          });
+        }
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width - 90,
+        height: 60,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(colors: [
+            Color.fromARGB(255, 50, 230, 65),
+            Color.fromARGB(255, 50, 230, 65),
+            Color.fromARGB(255, 50, 230, 65)
+          ]),
+        ),
+        child: Center(
+          child: circular
+              ? CircularProgressIndicator()
+              : Text(
+                  "Sign In",
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
         ),
       ),
     );
@@ -141,14 +174,23 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-  Widget textItem(String labeltext) {
+  Widget textItem(
+      String labeltext, TextEditingController controller, bool obscureText) {
     return Container(
       width: MediaQuery.of(context).size.width - 70,
       height: 55,
       child: TextFormField(
+        controller:
+            controller, //assigning the controller ie passed in above parameter
+        obscureText: obscureText,
+        style: TextStyle(fontSize: 17, color: Colors.white),
         decoration: InputDecoration(
             labelText: labeltext,
-            labelStyle: TextStyle(fontSize: 17, color: Colors.white),
+            labelStyle:
+                TextStyle(fontSize: 17, color: Colors.white), //TextStyle
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(width: 1.5, color: Colors.amber)),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: BorderSide(width: 1, color: Colors.grey))),
