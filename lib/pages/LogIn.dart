@@ -2,6 +2,7 @@
 
 import 'package:firebasedemo/Service/Auth_Service.dart';
 import 'package:firebasedemo/pages/HomePage.dart';
+import 'package:firebasedemo/pages/SignUpPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -69,19 +70,27 @@ class _LogInPageState extends State<LogInPage> {
               const SizedBox(
                 height: 20,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "If you don't have an account? ",
+                  const Text(
+                    "Don't have an account? ",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
-                  Text(
-                    "SignUp",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUpPage()));
+                    },
+                    child: const Text(
+                      "SignUp",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
                   )
                 ],
               ),
@@ -119,6 +128,7 @@ class _LogInPageState extends State<LogInPage> {
               MaterialPageRoute(builder: (builder) => const HomePage()));
         } catch (e) {
           final snackBar = SnackBar(content: Text(e.toString()));
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           setState(() {
             circular = false;

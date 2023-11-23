@@ -3,10 +3,13 @@
     "ARGB",
     "audiotrack",
     "Cupertino",
+    "Firestore",
     "imagepath",
     "labeltext",
     "Navigationbar",
+    "signin",
     "signup",
-    "signupcheck"
+    "signupcheck",
+    "untick"
   ]
 }

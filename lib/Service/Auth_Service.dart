@@ -35,18 +35,22 @@ class AuthClass {
           storeTokenAndData(
               userCredential); //calling this method before navigating to next screen and passing userCredential which we are getting after the sign in with the credential with firebase.
           //It will be going to store the token in flutter_secure_storage and we have to check that  token in main.dart file.
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (builder) => const HomePage()));
         } catch (e) {
           final snackBar = SnackBar(content: Text(e.toString()));
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       } else {
         final snackBar = SnackBar(content: Text('Not able to sign in'));
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
       final snackBar = SnackBar(content: Text(e.toString()));
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }

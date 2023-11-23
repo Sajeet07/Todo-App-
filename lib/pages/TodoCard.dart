@@ -24,6 +24,10 @@ class TodoCard extends StatelessWidget {
       child: Row(
         children: [
           Theme(
+            data: ThemeData(
+              primarySwatch: Colors.blue,
+              unselectedWidgetColor: const Color(0xff5e616a),
+            ),
             child: Transform.scale(
               scale: 1.5,
               child: Checkbox(
@@ -36,10 +40,6 @@ class TodoCard extends StatelessWidget {
                     check, //untick if value is false  and check means assigning value dynamically
                 onChanged: (bool? value) {},
               ),
-            ),
-            data: ThemeData(
-              primarySwatch: Colors.blue,
-              unselectedWidgetColor: const Color(0xff5e616a),
             ),
           ),
           Expanded(

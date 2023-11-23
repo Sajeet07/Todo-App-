@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: unused_import
 import 'package:firebase_core/firebase_core.dart';
+// ignore: unused_import
 import 'package:firebasedemo/ButtomNavigationbarPages/page1.dart';
 import 'package:firebasedemo/pages/HomePage.dart';
+// ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
+// ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +18,8 @@ class AddTodo extends StatefulWidget {
 }
 
 class _AddTodo extends State<AddTodo> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   String type = ""; //This will match to task field type
   String category = "";
 
@@ -62,11 +66,11 @@ class _AddTodo extends State<AddTodo> {
                     ),
                     Row(
                       children: [
-                        taskSelect('Important !', 0xffff6d6e),
+                        taskSelect('Important !', 0xff234ebd),
                         const SizedBox(
                           width: 20,
                         ),
-                        taskSelect('planned', 0xff2bc8d9),
+                        taskSelect('planned', 0xff2664fa),
                       ],
                     ),
                     const SizedBox(
@@ -91,7 +95,7 @@ class _AddTodo extends State<AddTodo> {
                         const SizedBox(
                           width: 20,
                         ),
-                        categorySelect('Workout', 0xff2bc8d9),
+                        categorySelect('Workout', 0xff6557ff),
                         const SizedBox(
                           width: 20,
                         ),
@@ -103,7 +107,7 @@ class _AddTodo extends State<AddTodo> {
                         const SizedBox(
                           width: 20,
                         ),
-                        categorySelect('Run', 0xfff29732),
+                        categorySelect('Run', 0xff6557ff),
                         const SizedBox(
                           width: 50,
                         ),
@@ -135,8 +139,8 @@ class _AddTodo extends State<AddTodo> {
           "Category": category,
           "description": _descriptionController.text
         });
-        Navigator.pushReplacement(
-            (context), MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.pushReplacement((context),
+            MaterialPageRoute(builder: (context) => const HomePage()));
       },
       child: Container(
         height: 50,

@@ -1,14 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: unused_import
 import 'package:firebase_core/firebase_core.dart';
+// ignore: unused_import
 import 'package:firebasedemo/ButtomNavigationbarPages/page1.dart';
 import 'package:firebasedemo/pages/HomePage.dart';
+// ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
+// ignore: unused_import
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class viewData extends StatefulWidget {
   final Map<String, dynamic>? document;
-  const viewData({super.key, this.document});
+  const viewData({super.key, this.document, this.id});
+  final String? id;
 
   @override
   State<viewData> createState() => _viewData();
@@ -23,11 +29,8 @@ class _viewData extends State<viewData> {
   bool edit = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    String title = widget.document!["title"] == null
-        ? "Hey there"
-        : widget.document!["title"];
+    String title = widget.document!["title"] ?? "Hey there";
     _titleController = TextEditingController(text: title);
     _descriptionController =
         TextEditingController(text: widget.document?["description"]);
@@ -39,10 +42,25 @@ class _viewData extends State<viewData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 50, 230, 65),
+        backgroundColor: const Color.fromARGB(255, 50, 230, 65),
         toolbarHeight: 35,
         elevation: 0,
         actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseFirestore.instance
+                    .collection("Todo")
+                    .doc(widget.id)
+                    .delete()
+                    .then((value) {
+                  Navigator.pop(context);
+                });
+              },
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+                size: 28,
+              )),
           IconButton(
               onPressed: () {
                 setState(() {
@@ -143,7 +161,9 @@ class _viewData extends State<viewData> {
                     const SizedBox(
                       height: 30,
                     ),
-                    button(),
+                    edit
+                        ? button()
+                        : Container(), //if user click the edit icon then visible update todo btn
                     const SizedBox(
                       height: 30,
                     ),
@@ -160,14 +180,14 @@ class _viewData extends State<viewData> {
   Widget button() {
     return InkWell(
       onTap: () {
-        FirebaseFirestore.instance.collection("Todo").add({
+        FirebaseFirestore.instance.collection("Todo").doc(widget.id).update({
           "title": _titleController.text,
           "task": type,
           "Category": category,
           "description": _descriptionController.text
         });
-        Navigator.pushReplacement(
-            (context), MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.pop((context),
+            MaterialPageRoute(builder: (context) => const HomePage()));
       },
       child: Container(
         height: 50,
@@ -177,7 +197,7 @@ class _viewData extends State<viewData> {
             color: const Color.fromARGB(255, 9, 174, 14)),
         child: const Center(
           child: Text(
-            "Add Todo",
+            "Update Todo",
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -258,9 +278,11 @@ class _viewData extends State<viewData> {
 
   Widget categorySelect(String label, int color) {
     return InkWell(
-      onTap: () {
-        category = label;
-      },
+      onTap: edit
+          ? () {
+              category = label;
+            }
+          : null,
       child: Chip(
         backgroundColor: category == label ? Colors.white : Color(color),
         shape: RoundedRectangleBorder(

@@ -1,13 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
+// ignore: unused_import
 import 'package:firebasedemo/ButtomNavigationbarPages/page1.dart';
 
 import 'package:firebasedemo/Service/Auth_Service.dart';
 import 'package:firebasedemo/pages/HomePage.dart';
 
+// ignore: unused_import
 import 'package:firebasedemo/pages/LogIn.dart';
 import 'package:firebasedemo/pages/SignUpPage.dart';
 import 'package:firebasedemo/pages/signupscreen1.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 void main() async {
@@ -28,7 +31,6 @@ class _MyAppState extends State<MyApp> {
   AuthClass authClass = AuthClass();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkLogin();
   }
@@ -47,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CheckScreen(), //Checkscreen
+      home: CheckScreen(),
     );
   }
 }

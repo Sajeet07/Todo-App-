@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasedemo/pages/LogIn.dart';
 
 import 'package:firebasedemo/pages/SignUpPage.dart';
 import 'package:firebasedemo/ButtomNavigationbarPages/AddTodo.dart';
 import 'package:firebasedemo/ButtomNavigationbarPages/page1.dart';
-import 'package:firebasedemo/ButtomNavigationbarPages/page3.dart';
 
 import 'package:flutter/material.dart';
 
@@ -18,9 +18,9 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     Page1(),
-    AddTodo(),
+    const AddTodo(),
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -33,46 +33,46 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 50, 230, 65),
         appBar: AppBar(
-            elevation: 5,
-            backgroundColor: const Color.fromARGB(255, 50, 230, 65),
-            title: const Text(
-              "Today's Schedule",
-              style: TextStyle(
-                  fontSize: 29,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+          elevation: 5,
+          backgroundColor: const Color.fromARGB(255, 50, 230, 65),
+          title: const Text(
+            "Today's Schedule",
+            style: TextStyle(
+                fontSize: 29, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  FirebaseAuth auth = FirebaseAuth.instance;
+                  auth.signOut();
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const LogInPage()));
+                },
+                icon: const Icon(Icons.logout)),
+            const SizedBox(
+              width: 35,
             ),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    FirebaseAuth auth = FirebaseAuth.instance;
-                    auth.signOut();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const SignUpPage()));
-                  },
-                  icon: const Icon(Icons.logout)),
-              const SizedBox(
-                width: 35,
+            const CircleAvatar(
+              backgroundImage: AssetImage("assets/sajit_avatar.jpg"),
+            ),
+          ],
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(35),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 22),
+                child: Text(
+                  "Tuesday 21",
+                  style: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
+                ),
               ),
-              const CircleAvatar(
-                backgroundImage: AssetImage("assets/sajit_avatar.jpg"),
-              ),
-            ],
-            bottom: const PreferredSize(
-                preferredSize: Size.fromHeight(35),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 22),
-                    child: Text(
-                      "Tuesday 21",
-                      style: TextStyle(
-                          fontSize: 27,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                    ),
-                  ),
-                ))),
+            ),
+          ),
+        ),
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[

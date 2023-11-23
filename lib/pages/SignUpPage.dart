@@ -77,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "If you already have an account? ",
+                    "Already have an account? ",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   InkWell(
@@ -131,6 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             const HomePage())); //it is used to jump from one page to another page
               } catch (e) {
                 final snackBar = SnackBar(content: Text(e.toString()));
+                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 setState(() {
                   circular = false;
